@@ -1,18 +1,27 @@
-<a href="/" class="inline-flex items-center gap-3 text-lg sm:text-xl" aria-label="TaskFlow AI domov">
-	<svg viewBox="0 0 24 24" class="h-10 w-10 shrink-0" fill="none" aria-hidden="true">
+---
+// Existing TaskFlow AI logo. Self-contained CSS (no Tailwind needed) so it renders the same on every page.
+// `gid` keeps the SVG gradient id unique when the logo appears more than once on a page.
+const { gid = 'logoGradient' } = Astro.props;
+---
+<a href="/" class="tf-logo" aria-label="TaskFlow AI domov">
+	<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
 		<defs>
-			<linearGradient id="logoGradient" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+			<linearGradient id={gid} x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse">
 				<stop stop-color="#6366F1" />
 				<stop offset="0.5" stop-color="#8B5CF6" />
 				<stop offset="1" stop-color="#D946EF" />
 			</linearGradient>
 		</defs>
-		<rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="url(#logoGradient)" />
+		<rect x="1.5" y="1.5" width="21" height="21" rx="6" fill={`url(#${gid})`} />
 		<path d="M7 7h10v10H7z" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round" />
 		<path d="M9.5 12h5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" />
 		<path d="M12 9.5v5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" />
 	</svg>
-	<span class="font-semibold tracking-tight text-white">
-		TaskFlow <span class="text-indigo-300">AI</span>
-	</span>
+	<span class="tf-name">TaskFlow <span class="tf-ai">AI</span></span>
 </a>
+<style>
+	.tf-logo{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-size:1.25rem;line-height:1;text-decoration:none}
+	.tf-logo svg{width:40px;height:40px;flex-shrink:0}
+	.tf-name{font-weight:600;letter-spacing:-.01em;color:var(--bone,#fff)}
+	.tf-ai{color:var(--acc,#a5b4fc)}
+</style>

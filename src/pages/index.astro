@@ -1,35 +1,280 @@
 ---
-import '../styles/global.css';
-
-import Navbar from '../components/Navbar.astro';
-import Hero from '../components/Hero.astro';
-import Features from '../components/Features.astro';
-import Pricing from '../components/Pricing.astro';
-import FAQ from '../components/FAQ.astro';
-import Footer from '../components/Footer.astro';
+import Logo from '../components/Logo.astro';
+// TaskFlow AI landing — rebuilt. Motion: GSAP + ScrollTrigger, Lenis as the ONLY smooth-scroll engine.
+// Assets: no raster imagery, no logos, no avatars. Hero is an authored data graphic (inline SVG). Fonts: Google Fonts (OFL).
+const stats = [
+	{ v: '24 %', l: 'rýchlejšie doručenie' },
+	{ v: '3,8 h', l: 'ušetrených týždenne' },
+	{ v: '98 %', l: 'prijatie tímom' },
+];
+const features = [
+	{ t: 'Automatizácia úloh pomocou AI', d: 'Nechajte TaskFlow AI triediť úlohy, navrhovať priority a odhaľovať zdržania skôr, než ovplyvnia tím.', k: 'Triedi · Prioritizuje · Varuje' },
+	{ t: 'Analytika v reálnom čase', d: 'Získajte okamžitý prehľad o stave projektov, vyťažení tímu a rizikách v jednom prehľadnom dashboarde.', k: 'Stav · Záťaž · Riziká' },
+	{ t: 'Inteligentné upozornenia', d: 'Buďte v obraze vďaka upozorneniam na termíny, blokéry a zmeny stavu, ktoré prichádzajú presne vtedy, keď ich potrebujete.', k: 'Termíny · Blokéry · Zmeny' },
+];
+const plans = [
+	{ n: 'Základ', m: '0 €', y: '0 €', d: 'Pre menšie tímy, ktoré chcú vyskúšať TaskFlow AI bez rizika.', f: ['1 tím', 'Základná AI prioritizácia', 'Jednoduché dashboardy', 'E-mailová podpora'], c: 'Začať zadarmo' },
+	{ n: 'Pro', m: '29 €', y: '24 €', d: 'Najpopulárnejší plán pre rastúce tímy, ktoré chcú automatizáciu a prehľady v reálnom čase.', f: ['Neobmedzené projekty', 'Pokročilá AI automatizácia', 'Analytika v reálnom čase', 'Prioritná podpora'], c: 'Začať s Pro', hot: true },
+	{ n: 'Enterprise', m: 'Kontakt', y: 'Kontakt', d: 'Pre firmy, ktoré potrebujú bezpečnosť, onboarding a riešenie na mieru.', f: ['Všetko z Pro', 'SSO a pokročilé oprávnenia', 'Vyhradený onboarding', 'SLA a dedikovaná podpora'], c: 'Kontaktovať predaj' },
+];
+const faqs = [
+	['Je možné TaskFlow AI vyskúšať zadarmo?', 'Áno. Môžete si aktivovať bezplatnú skúšku a otestovať kľúčové funkcie bez zadávania platobných údajov.'],
+	['Ako funguje umelá inteligencia pri plánovaní?', 'AI analyzuje priority, termíny, závislosti medzi úlohami a dostupnosť tímu. Na základe toho odporučí najefektívnejšie rozdelenie práce.'],
+	['Môžem predplatné kedykoľvek zrušiť?', 'Áno. Predplatné môžete zrušiť kedykoľvek priamo v účte. Prístup zostane aktívny do konca aktuálneho fakturačného obdobia.'],
+	['Ponúkate podporu pre tímy?', 'Áno. Poskytujeme podporu pre jednotlivcov aj celé tímy vrátane onboardingu, nastavenia procesov a prioritnej technickej podpory pri vyšších plánoch.'],
+];
+const lanes = [
+	{ n: 'Návrh', x: 40, w: 210, c: 'a' }, { n: 'API', x: 120, w: 150, c: 'b', blocked: true },
+	{ n: 'Testy', x: 300, w: 170, c: 'a' }, { n: 'Release', x: 340, w: 110, c: 'b' },
+];
 ---
-
 <!doctype html>
 <html lang="sk">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href="/taskflow-favicon.svg?v=2" />
-		<link rel="icon" href="/taskflow-favicon.svg?v=2" />
-		<title>TaskFlow AI | AI projektový nástroj</title>
-	</head>
-	<body class="overflow-x-hidden bg-slate-950 text-slate-50 antialiased scroll-smooth">
-		<Navbar />
-		<Hero />
-		<section id="funkcie">
-			<Features />
-		</section>
-		<section id="cennik">
-			<Pricing />
-		</section>
-		<section id="faq">
-			<FAQ />
-		</section>
-		<Footer />
-	</body>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<link rel="icon" type="image/svg+xml" href="/taskflow-favicon.svg?v=2" />
+	<title>TaskFlow AI | AI projektový nástroj</title>
+	<meta name="description" content="TaskFlow AI pomáha tímom plánovať, prioritizovať a dodávať rýchlejšie." />
+	<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+<a class="skip" href="#main">Preskočiť na obsah</a>
+<header class="nav">
+	<Logo />
+	<nav aria-label="Hlavná navigácia" id="menu">
+		<a style="--i:0" href="#funkcie">Funkcie</a><a style="--i:1" href="#cennik">Cenník</a><a style="--i:2" href="#faq">FAQ</a><a style="--i:3" class="pill" href="/signup">Vyskúšať</a>
+	</nav>
+	<button class="burger" aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
+</header>
+
+<main id="main">
+<section class="hero" aria-labelledby="h1">
+	<div class="hero-copy">
+		<p class="eyebrow" data-in>TaskFlow AI pre moderné produktové tímy</p>
+		<h1 id="h1" class="split" aria-label="Maximalizujte produktivitu s AI">Maximalizujte produktivitu s <em>AI</em></h1>
+		<p class="lead" data-in>TaskFlow AI pomáha tímom plánovať, prioritizovať a dodávať rýchlejšie vďaka inteligentnej automatizácii úloh, prehľadom v reálnom čase a proaktívnym upozorneniam, ktoré udržiavajú prácu v pohybe.</p>
+		<div class="cta" data-in><a class="btn" href="/signup">Začať bezplatnú skúšku</a><a class="btn ghost" href="/demo">Pozrieť demo</a></div>
+	</div>
+	<figure class="board" role="img" aria-label="Schematický graf: úloha API je zablokovaná, AI ju presmeruje a uvoľní release" data-in>
+		<svg viewBox="0 0 560 300" aria-hidden="true">
+			{lanes.map((l, i) => (<g>
+				<text x="0" y={52 + i * 62} class="lane">{l.n}</text>
+				<line x1="0" x2="560" y1={64 + i * 62} y2={64 + i * 62} class="grid" />
+				<rect data-bar x={l.x + 60} y={36 + i * 62} width={l.w} height="26" rx="13" class={`bar ${l.c} ${l.blocked ? 'blocked' : ''}`} />
+			</g>))}
+			<path data-route d="M262 111 C 330 111, 300 49, 372 49 S 420 235, 470 235" class="route" pathLength="1" />
+		</svg>
+		<figcaption><span class="tag warn">Blokér: API</span><span class="tag ok">AI presmerovala záťaž</span></figcaption>
+	</figure>
+	<dl class="stats" data-in>
+		{stats.map((s) => (<div><dt>{s.l}</dt><dd>{s.v}</dd></div>))}
+	</dl>
+</section>
+
+<section id="funkcie" class="sec" aria-labelledby="fh">
+	<p class="eyebrow">Funkcie</p>
+	<h2 id="fh" class="split" aria-label="Všetko, čo tím potrebuje na rýchlejšiu prácu">Všetko, čo tím potrebuje na rýchlejšiu prácu</h2>
+	<p class="lead" data-rv>TaskFlow AI spája automatizáciu, prehľady aj komunikáciu do jedného moderného pracovného priestoru.</p>
+	<ol class="rows">
+		{features.map((f, i) => (<li data-rv>
+			<span class="num">0{i + 1}</span><h3>{f.t}</h3><p>{f.d}</p><span class="keys">{f.k}</span>
+		</li>))}
+	</ol>
+</section>
+
+<section id="cennik" class="sec" aria-labelledby="ph">
+	<p class="eyebrow">Cenník</p>
+	<h2 id="ph" class="split" aria-label="Transparentné ceny podľa toho, ako rýchlo chcete rásť">Transparentné ceny podľa toho, ako rýchlo chcete rásť</h2>
+	<p class="lead" data-rv>Zvoľte mesačné alebo ročné fakturovanie a nájdite plán, ktorý sedí vášmu tímu aj rozpočtu.</p>
+	<div class="toggle" role="group" aria-label="Fakturácia">
+		<button type="button" data-bill="m" aria-pressed="true">Mesačne</button><button type="button" data-bill="y" aria-pressed="false">Ročne</button>
+	</div>
+	<div class="plans">
+		{plans.map((p) => (<article class={`plan ${p.hot ? 'hot' : ''}`} data-rv>
+			{p.hot && <span class="tag ok">Najpopulárnejšie</span>}
+			<h3>{p.n}</h3><p class="pd">{p.d}</p>
+			<p class="price"><b data-m={p.m} data-y={p.y}>{p.m}</b> <small data-per>{p.n === 'Enterprise' ? 'na mieru' : '/mesačne'}</small></p>
+			<ul>{p.f.map((x) => <li>{x}</li>)}</ul>
+			<a class={`btn ${p.hot ? '' : 'ghost'}`} href="/signup">{p.c}</a>
+		</article>))}
+	</div>
+</section>
+
+<section id="faq" class="sec narrow" aria-labelledby="qh">
+	<p class="eyebrow">FAQ</p>
+	<h2 id="qh" class="split" aria-label="Často kladené otázky">Často kladené otázky</h2>
+	<div class="faq">{faqs.map(([q, a]) => (<details data-rv><summary>{q}</summary><p>{a}</p></details>))}</div>
+</section>
+
+<section class="final" aria-labelledby="fin">
+	<h2 id="fin" class="split" aria-label="Nechajte prácu plynúť">Nechajte prácu <em>plynúť</em></h2>
+	<div class="cta"><a class="btn" href="/signup">Začať bezplatnú skúšku</a><a class="btn ghost" href="/demo">Pozrieť demo</a></div>
+</section>
+</main>
+
+<footer class="foot"><Logo gid="logoGradientFoot" /><small>© {new Date().getFullYear()} TaskFlow AI</small></footer>
+
+<style is:global>
+:root{--ink:#0b0b12;--ink2:#14141f;--bone:#f1ece2;--mute:#a6a3b4;--line:#ffffff1f;--acc:#8b8bff;--ok:#b6f26b;--warn:#ff7a59;--pad:clamp(20px,5vw,72px);color-scheme:dark}
+@media (prefers-color-scheme:light){:root{--ink:#f4f0e8;--ink2:#ebe5d8;--bone:#14121c;--mute:#5d5a6b;--line:#14121c22;--acc:#4c4cf0;--ok:#3f7d0c;--warn:#c2411f;color-scheme:light}}
+*{box-sizing:border-box;margin:0}
+html{background:var(--ink);scroll-padding-top:80px}
+html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{font:400 17px/1.6 "Inter Tight",system-ui,sans-serif;color:var(--bone);background:var(--ink);overflow-x:hidden;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:var(--bone);color:var(--ink);padding:8px 12px;z-index:99}
+em{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-weight:400;color:var(--acc)}
+h1,h2{font:400 clamp(2.6rem,7vw,6.4rem)/.98 "Instrument Serif",Georgia,serif;letter-spacing:-.02em}
+h2{font-size:clamp(2.1rem,4.6vw,4.2rem);max-width:18ch}
+h3{font:600 1.25rem/1.3 "Inter Tight",sans-serif}
+.nav{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:14px var(--pad);padding-top:calc(14px + env(safe-area-inset-top,0px));background:color-mix(in srgb,var(--ink) 88%,transparent);border-bottom:1px solid var(--line)}
+.nav nav{display:flex;gap:28px;align-items:center;font-size:15px}.nav nav a:hover{color:var(--acc)}
+.pill{border:1px solid var(--line);padding:8px 16px;border-radius:99px}
+.burger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:6px;background:none;border:0;width:44px;height:44px;cursor:pointer}.burger span{display:block;width:22px;height:2px;background:var(--bone);transition:transform .3s cubic-bezier(.2,.8,.2,1)}.burger[aria-expanded=true] span:first-child{transform:translateY(4px) rotate(45deg)}.burger[aria-expanded=true] span:last-child{transform:translateY(-4px) rotate(-45deg)}
+@media(max-width:760px){.burger{display:flex}
+.nav nav{position:absolute;inset:100% 0 auto;flex-direction:column;align-items:stretch;gap:0;background:var(--ink);padding:8px var(--pad) 20px;border-bottom:1px solid var(--line);visibility:hidden;opacity:0;clip-path:inset(0 0 100% 0);transition:clip-path .4s cubic-bezier(.2,.8,.2,1),opacity .25s,visibility 0s .4s}
+.nav nav.open{visibility:visible;opacity:1;clip-path:inset(0);transition:clip-path .4s cubic-bezier(.2,.8,.2,1),opacity .25s,visibility 0s}
+.nav nav a{padding:14px 0;opacity:0;transform:translateY(-10px);transition:opacity .3s,transform .35s cubic-bezier(.2,.8,.2,1),color .2s}
+.nav nav.open a{opacity:1;transform:none;transition-delay:calc(var(--i)*60ms + 120ms),calc(var(--i)*60ms + 120ms),0s}
+.nav nav .pill{margin-top:10px;padding:14px 22px;text-align:center}}
+@media(min-width:761px){.nav nav a:not(.pill){position:relative}.nav nav a:not(.pill)::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.2,.8,.2,1)}.nav nav a:not(.pill):hover::after{transform:scaleX(1)}}
+.pill{transition:background .2s,border-color .2s,color .2s}.pill:hover{border-color:var(--acc);color:var(--acc)}
+:root{interpolate-size:allow-keywords}
+.faq details::details-content{block-size:0;overflow:hidden;transition:block-size .4s cubic-bezier(.2,.8,.2,1),content-visibility .4s allow-discrete}
+.faq details[open]::details-content{block-size:auto}
+.faq summary{transition:color .2s}.faq summary:hover{color:var(--acc)}
+.toggle button{transition:background .25s,color .25s}
+.plan{transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s}.plan:hover{transform:translateY(-6px);border-color:var(--acc)}
+@keyframes swap{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.price b{display:inline-block}.price b.swap,.price small.swap{animation:swap .4s cubic-bezier(.2,.8,.2,1)}
+@media(prefers-reduced-motion:reduce){.price b.swap,.price small.swap{animation:none}}
+.eyebrow{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:20px}
+.lead{max-width:54ch;color:var(--mute);font-size:1.12rem;margin-top:24px}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,5vw,80px);align-items:center;padding:clamp(48px,9vw,120px) var(--pad) 40px;min-height:calc(100svh - 70px)}
+@media(max-width:960px){.hero{grid-template-columns:1fr}}
+.cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:99px;background:var(--bone);color:var(--ink);font-weight:600;border:1px solid var(--bone);transition:transform .2s,background .2s,color .2s}
+.btn:hover{transform:translateY(-2px);background:var(--acc);border-color:var(--acc);color:#fff}.btn:active{transform:none}
+.btn.ghost{background:transparent;color:var(--bone);border-color:var(--line)}.btn.ghost:hover{border-color:var(--acc);background:transparent;color:var(--acc)}
+.board{background:var(--ink2);border:1px solid var(--line);border-radius:28px;padding:22px 22px 18px;--px:0;--py:0}
+.board svg{width:100%;height:auto;display:block;transform:translate(calc(var(--px)*8px),calc(var(--py)*6px))}
+.lane{fill:var(--mute);font:500 12px "Inter Tight",sans-serif}.grid{stroke:var(--line)}
+.bar{fill:var(--acc);opacity:.85}.bar.b{fill:var(--bone);opacity:.75}.bar.blocked{fill:var(--warn);opacity:1}
+.route{fill:none;stroke:var(--ok);stroke-width:3;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
+figcaption{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;border:1px solid currentColor}.tag.ok{color:var(--ok)}.tag.warn{color:var(--warn)}
+.stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);margin-top:24px}
+.stats div{padding:24px 0 0;display:flex;flex-direction:column-reverse}.stats dd{font:400 clamp(2.2rem,5vw,4rem)/1 "Instrument Serif",serif}.stats dt{color:var(--mute);font-size:14px}
+.sec{padding:clamp(72px,11vw,160px) var(--pad);border-top:1px solid var(--line)}.sec.narrow{max-width:960px;margin:0 auto}
+.rows{list-style:none;padding:0;margin-top:56px}
+.rows li{display:grid;grid-template-columns:80px 1fr 1.2fr auto;gap:24px;align-items:baseline;padding:32px 0;border-top:1px solid var(--line);transition:padding .3s}
+.rows li:hover{padding-left:12px}.rows li:hover .num{color:var(--acc)}
+.num{font:400 2rem "Instrument Serif",serif;color:var(--mute);transition:color .3s}.rows p{color:var(--mute)}.keys{font-size:13px;color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+@media(max-width:900px){.rows li{grid-template-columns:1fr;gap:10px}}
+.toggle{display:inline-flex;border:1px solid var(--line);border-radius:99px;padding:4px;margin-top:36px}
+.toggle button{border:0;background:none;color:var(--mute);font:inherit;font-weight:600;padding:10px 22px;border-radius:99px;cursor:pointer;min-height:44px}
+.toggle button[aria-pressed=true]{background:var(--bone);color:var(--ink)}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:40px}
+.plan{border:1px solid var(--line);border-radius:24px;padding:32px;display:flex;flex-direction:column;gap:14px;background:var(--ink2)}
+.plan.hot{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 10%,var(--ink2))}
+.plan .tag{align-self:flex-start}.pd{color:var(--mute);font-size:15px}
+.price b{font:400 3.2rem "Instrument Serif",serif}.price small{color:var(--mute)}
+.plan ul{list-style:none;padding:0;display:grid;gap:10px;margin:8px 0 18px;flex:1}.plan li::before{content:"→ ";color:var(--ok)}
+.faq{margin-top:clamp(44px,6vw,72px)}
+.faq details{border-top:1px solid var(--line)}.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;font-weight:600;font-size:1.15rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:44px;padding:20px 0}
+.faq summary::-webkit-details-marker{display:none}.faq summary::after{content:"+";color:var(--acc);font-size:1.5rem;line-height:1;transition:transform .25s}
+.faq details[open] summary::after{transform:rotate(45deg)}.faq p{color:var(--mute);padding-bottom:22px;max-width:60ch}
+.final{padding:clamp(96px,14vw,200px) var(--pad);border-top:1px solid var(--line);text-align:center}
+.final h2{margin:0 auto;max-width:14ch;font-size:clamp(3rem,9vw,8rem)}.final .cta{justify-content:center}
+.foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:28px var(--pad);border-top:1px solid var(--line);color:var(--mute)}
+.w{display:inline-block;white-space:pre}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<script>
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
+
+gsap.registerPlugin(ScrollTrigger);
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $$ = (s: string, r: ParentNode = document) => Array.from(r.querySelectorAll<HTMLElement>(s));
+
+// Mobile nav (works without GSAP)
+const burger = document.querySelector<HTMLButtonElement>('.burger')!;
+const menu = document.getElementById('menu')!;
+burger.addEventListener('click', () => { const o = menu.classList.toggle('open'); burger.setAttribute('aria-expanded', String(o)); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu.classList.contains('open')) { menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); burger.focus(); } });
+menu.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) { menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); } });
+
+// Pricing toggle (works without GSAP)
+const btns = $$('[data-bill]');
+btns.forEach((b) => b.addEventListener('click', () => {
+	const y = b.dataset.bill === 'y';
+	btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+	$$('.plan').forEach((p) => {
+		const price = p.querySelector<HTMLElement>('[data-m]')!, per = p.querySelector<HTMLElement>('[data-per]')!;
+		price.textContent = y ? price.dataset.y! : price.dataset.m!;
+		if (price.dataset.m !== 'Kontakt') per.textContent = y ? '/mesiac pri ročnej platbe' : '/mesačne';
+		[price, per].forEach((n) => { n.classList.remove('swap'); void n.offsetWidth; n.classList.add('swap'); });
+	});
+}));
+
+if (!reduce) {
+	// Split headings word by word. The element keeps its aria-label; the split words are aria-hidden, and the HTML stays readable without JS.
+	$$('.split').forEach((h) => {
+		const frag = document.createDocumentFragment();
+		h.childNodes.forEach((n) => {
+			const em = n.nodeType === 1 ? (n as HTMLElement) : null;
+			(n.textContent || '').split(/(\s+)/).forEach((t) => {
+				if (!t) return;
+				if (/^\s+$/.test(t)) return frag.append(' ');
+				const w = document.createElement('span'); w.className = 'w'; w.setAttribute('aria-hidden', 'true');
+				const inner = document.createElement(em ? em.tagName.toLowerCase() : 'span'); inner.textContent = t; inner.style.display = 'inline-block';
+				w.append(inner); frag.append(w);
+			});
+		});
+		h.replaceChildren(frag);
+	});
+
+	// ONE smooth-scroll engine: Lenis, driven by the GSAP ticker and synced with ScrollTrigger.
+	const lenis = new Lenis({ lerp: 0.1 });
+	lenis.on('scroll', ScrollTrigger.update);
+	const tick = (t: number) => lenis.raf(t * 1000);
+	gsap.ticker.add(tick); gsap.ticker.lagSmoothing(0);
+
+	// Hero intro. Nav, copy and CTAs are visible in the static HTML; the intro only animates them in.
+	const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+	tl.from('.hero .w', { yPercent: 110, opacity: 0, duration: 0.9, stagger: 0.07 })
+		.from('.hero [data-in]', { y: 24, opacity: 0, duration: 0.7, stagger: 0.1 }, '-=0.5')
+		.from('[data-bar]', { scaleX: 0, transformOrigin: 'left center', duration: 0.7, stagger: 0.12 }, '-=0.8')
+		.fromTo('[data-route]', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' }, '-=0.2');
+
+	// Section headings + content reveals
+	$$('.sec .split, .final .split').forEach((h) => {
+		gsap.from($$('.w', h), { yPercent: 110, opacity: 0, duration: 0.8, stagger: 0.05, ease: 'power3.out', scrollTrigger: { trigger: h, start: 'top 85%', once: true } });
+	});
+	$$('[data-rv]').forEach((el) => gsap.from(el, { y: 36, opacity: 0, duration: 0.8, ease: 'power3.out', clearProps: 'transform,opacity', scrollTrigger: { trigger: el, start: 'top 90%', once: true } }));
+
+	// Pointer parallax on the board: additive, fine pointers only, reset on blur/hidden.
+	const board = document.querySelector<HTMLElement>('.board')!;
+	if (window.matchMedia('(pointer: fine)').matches) {
+		let raf = 0;
+		const move = (e: PointerEvent) => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; board.style.setProperty('--px', String((e.clientX / innerWidth - 0.5) * 2)); board.style.setProperty('--py', String((e.clientY / innerHeight - 0.5) * 2)); }); };
+		const reset = () => { board.style.setProperty('--px', '0'); board.style.setProperty('--py', '0'); };
+		window.addEventListener('pointermove', move, { passive: true });
+		window.addEventListener('blur', reset);
+		document.addEventListener('visibilitychange', () => document.hidden && reset());
+	}
+
+	// Remeasure after fonts load; clean up on page teardown.
+	document.fonts?.ready.then(() => ScrollTrigger.refresh());
+	window.addEventListener('pagehide', () => { gsap.ticker.remove(tick); lenis.destroy(); ScrollTrigger.getAll().forEach((t) => t.kill()); });
+}
+</script>
+</body>
 </html>
